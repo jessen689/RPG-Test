@@ -37,7 +37,7 @@ namespace RPGTest
 				{
 					if(popUp.id == _id)
 					{
-						if(Instantiate(popUp.popUpPrefabs).TryGetComponent<IPopUp>(out var cachedPopUp))
+						if(Instantiate(popUp.popUpPrefabs, transform).TryGetComponent<IPopUp>(out var cachedPopUp))
 						{
 							cachedPopUps.Add(_id, cachedPopUp);
 							break;

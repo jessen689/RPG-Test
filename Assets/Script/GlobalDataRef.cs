@@ -8,6 +8,7 @@ namespace RPGTest
 
 		public GameObject player;
 		public float playerHealth;
+		public float playerMaxHealth;
 
 		private void Awake()
 		{
@@ -19,6 +20,11 @@ namespace RPGTest
 				Instance = this;
 				DontDestroyOnLoad(gameObject);
 			}
+		}
+
+		public void FullHealPlayer()
+		{
+			playerHealth = playerMaxHealth;
 		}
 	}
 }

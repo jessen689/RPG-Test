@@ -7,8 +7,11 @@ namespace RPGTest
 		[SerializeField] private float moveSpeed_;
 		[SerializeField] private Rigidbody2D rb2d_;
 		[SerializeField] private SpriteRenderer spriteRenderer_;
+		[SerializeField] private Animator animator_;
 
 		private Vector2 moveDirection;
+
+		private const string MOVE_ANIM_STRING = "Move";
 
 		private void Update()
 		{
@@ -31,11 +34,13 @@ namespace RPGTest
 		private void FixedUpdate()
 		{
 			//move character
-			transform.Translate(moveDirection.normalized * moveSpeed_ * Time.deltaTime);
+			transform.Translate(moveDirection.normalized * moveSpeed_ * Time.fixedDeltaTime);
 			if (moveDirection.normalized.x < 0)
 				spriteRenderer_.flipX = true;
 			else if(moveDirection.normalized.x > 0)
 				spriteRenderer_.flipX = false;
+
+			animator_.SetBool(MOVE_ANIM_STRING, moveDirection != Vector2.zero);
 		}
 	}
 }

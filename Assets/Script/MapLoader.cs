@@ -45,7 +45,7 @@ namespace RPGTest
 				{
 					if(terrain.id == _id)
 					{
-						if(Instantiate(terrain.terrainPrefabs).TryGetComponent<ITerrainPlace>(out var cachedTerrain))
+						if(Instantiate(terrain.terrainPrefabs, transform).TryGetComponent<ITerrainPlace>(out var cachedTerrain))
 						{
 							cachedTerrains.Add(_id, cachedTerrain);
 							break;
