@@ -10,6 +10,7 @@ namespace RPGTest
 		[SerializeField] private Animator animator_;
 
 		private Vector2 moveDirection;
+		public bool isFacingLeft { get; private set; } = false;
 
 		private const string MOVE_ANIM_STRING = "Move";
 
@@ -36,9 +37,9 @@ namespace RPGTest
 			//move character
 			transform.Translate(moveDirection.normalized * moveSpeed_ * Time.fixedDeltaTime);
 			if (moveDirection.normalized.x < 0)
-				spriteRenderer_.flipX = true;
+			 	isFacingLeft = spriteRenderer_.flipX = true;
 			else if(moveDirection.normalized.x > 0)
-				spriteRenderer_.flipX = false;
+				isFacingLeft = spriteRenderer_.flipX = false;
 
 			animator_.SetBool(MOVE_ANIM_STRING, moveDirection != Vector2.zero);
 		}

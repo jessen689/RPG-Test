@@ -36,7 +36,7 @@ namespace RPGTest
 		#region Called in Anim Event
 		private void LoadDestination()
 		{
-			MapLoader.Instance.LoadTerrain(destID_);
+			GameEvents.Instance.LoadMap(destID_);
 			isOpened = false;
 		}
 		#endregion

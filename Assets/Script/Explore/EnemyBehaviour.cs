@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,6 +16,7 @@ namespace RPGTest
 		[SerializeField] private float maxDistanceChase_;
 		[SerializeField] private SpriteRenderer spriteRenderer_;
 		[SerializeField] private Animator animator_;
+		public List<CombatUnitID> combatGroup_;
 
 		private enum BehaviourState
 		{
@@ -31,11 +31,15 @@ namespace RPGTest
 		private bool isStopMoving;
 		private bool isRandomDirectionObtained;
 		private float durationCounter;
+		private Vector2 tempPoint;
+		public bool IsFacingLeft { get; private set; } = false;
+
+		public event Action<EnemyBehaviour> OnDefeatedInCombat;
 
 		private const string ATTACK_ANIM_STRING = "Attack";
 		private const string MOVE_ANIM_STRING = "Move";
 
-		private void Awake()
+		private void OnEnable()
 		{
 			currState = BehaviourState.Stay;
 		}
@@ -43,7 +47,9 @@ namespace RPGTest
 		private void FixedUpdate()
 		{
 			//set state
-			if (Physics2D.OverlapCircle(transform.position, chaseRange_, whatIsPlayer_) && currState != BehaviourState.Attack)
+			tempPoint = transform.position;
+			tempPoint.x = IsFacingLeft ? tempPoint.x - chaseRange_ : tempPoint.x + chaseRange_;
+			if (Physics2D.OverlapCircle(tempPoint, chaseRange_, whatIsPlayer_) && currState != BehaviourState.Attack)
 			{
 				durationCounter = 0;
 				currState = BehaviourState.Chase;
@@ -114,9 +120,9 @@ namespace RPGTest
 
 			transform.Translate(moveSpeed_ * Time.fixedDeltaTime * _finalDirection);
 			if (moveDirection.normalized.x < 0)
-				spriteRenderer_.flipX = true;
+				IsFacingLeft = spriteRenderer_.flipX = true;
 			else if (moveDirection.normalized.x > 0)
-				spriteRenderer_.flipX = false;
+				IsFacingLeft = spriteRenderer_.flipX = false;
 			animator_.SetBool(MOVE_ANIM_STRING, true);
 		}
 
@@ -126,6 +132,30 @@ namespace RPGTest
 			isRandomDirectionObtained = false;
 			animator_.SetBool(MOVE_ANIM_STRING, false);
 			animator_.SetBool(ATTACK_ANIM_STRING, false);
+		}
+
+		#region Called in Anim Event
+		private void CheckAttackHit()
+		{
+			if(Physics2D.OverlapCircle(transform.position, attackRange_, whatIsPlayer_))
+			{
+				GameEvents.Instance.EnterCombat(.5f, this);
+			}
+			currState = BehaviourState.Stay;
+		}
+		#endregion
+
+		public void Defeated()
+		{
+			OnDefeatedInCombat?.Invoke(this);
+			gameObject.SetActive(false);
+		}
+
+		public void Spawn(Vector2 _pos)
+		{
+			currState = BehaviourState.Stay;
+			gameObject.transform.position = _pos;
+			gameObject.SetActive(true);
 		}
 	}
 

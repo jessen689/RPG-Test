@@ -2,6 +2,7 @@ namespace RPGTest
 {
 	public enum PopUpUIID
 	{
-		ItemPopUp
+		ItemPopUp,
+		GameOverPopUp
 	}
 }

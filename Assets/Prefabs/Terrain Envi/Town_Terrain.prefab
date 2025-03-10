@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 107c7e5424e0d504e8cf687ee227be10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destID_: 0
+  destID_: 1
   animator_: {fileID: 4049400209453210687}
 --- !u!1 &4880078773835063508
 GameObject:
@@ -285,6 +285,10 @@ MonoBehaviour:
     spawnPos: {x: 0, y: 0}
   - id: 1
     spawnPos: {x: 4.07, y: 15.24}
+  topLimit_: 13.06
+  bottomLimit_: -4.47
+  leftLimit_: -6.87
+  rightLimit_: 6.19
 --- !u!1 &9122828525685818363
 GameObject:
   m_ObjectHideFlags: 0
